@@ -21,11 +21,10 @@ public class ClientCommunication implements Runnable {
     public void run() {
         try {
             this.ois = new ObjectInputStream(socket.getInputStream());
-            this.oos = new ObjectOutputStream(socket.getOutputStream());
 
             Message message = (Message) ois.readObject();
             System.out.println(message.toString());
-
+            this.oos = new ObjectOutputStream(socket.getOutputStream());
             oos.writeObject("Pong");
             oos.flush();
 
