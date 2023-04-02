@@ -26,11 +26,11 @@ public class Client {
         socket = new Socket(host.getHostName(), 12345);
         // write to socket using ObjectOutputStream
         oos = new ObjectOutputStream(socket.getOutputStream());
-        // read the server response message
-        ois = new ObjectInputStream(socket.getInputStream());
 
         System.out.println("Sending request to Socket Server");
         oos.writeObject(new Message(client, MessageType.INIT, "Ping", LocalDateTime.now(), null));
+        // read the server response message
+        ois = new ObjectInputStream(socket.getInputStream());
         Message response = (Message) ois.readObject();
         System.out.println("Message: " + response.toString());
 
