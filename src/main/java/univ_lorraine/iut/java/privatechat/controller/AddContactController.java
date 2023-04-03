@@ -10,16 +10,16 @@ import javafx.scene.control.ListView;
 import univ_lorraine.iut.java.privatechat.App;
 import univ_lorraine.iut.java.privatechat.model.Conversation;
 
-public class ChatController {
+public class AddContactController {
 
     @FXML private ListView<Conversation> conversationListView;
     private ObservableList<Conversation> conversationList = FXCollections.observableArrayList();
     private String userLogin;
-    @FXML private Button btnAddContact;
+
 
     public void initialize() {
         userLogin = App.getUser();
-        App.setWindowTitle("SaferChat (Utilisateur : " + userLogin + ")");
+        App.setWindowTitle("Ajouter un contact - SaferChat");
         conversationListView.setItems(conversationList);
     }
 
@@ -28,12 +28,7 @@ public class ChatController {
     }
 
     @FXML
-    private void logout() throws IOException {
-        App.setRoot("login");
-    }
-
-    @FXML
-    private void addContact() throws IOException {
-        App.setRoot("addContact");
+    private void submit() throws IOException {
+        App.setRoot("chat");
     }
 }
