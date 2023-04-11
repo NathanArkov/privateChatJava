@@ -59,7 +59,7 @@ public class LoginController {
     }
 
     @FXML private void initialize() {
-        App.setWindowTitle("SaferChat - Connexion");
+        // App.setWindowTitle("SaferChat - Connexion");
         if(!directory.exists()) {
             System.out.println("Création du dossier data");
             directory.mkdir();

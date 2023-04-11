@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import univ_lorraine.iut.java.privatechat.App;
 import univ_lorraine.iut.java.privatechat.model.Conversation;
+import univ_lorraine.iut.java.privatechat.model.ConversationListCell;
 
 public class ChatController {
 
@@ -19,13 +20,16 @@ public class ChatController {
 
     public void initialize() {
         userLogin = App.getUser();
-        App.setWindowTitle("SaferChat (Utilisateur : " + userLogin + ")");
-        conversationListView.setItems(conversationList);
+        // App.setWindowTitle("SaferChat (Utilisateur : " + userLogin + ")");
+        // conversationListView.setItems(conversationList);
+        // conversationListView.setCellFactory(param -> new ConversationListCell());
+
     }
 
     public void addConversation(Conversation conversation) {
         conversationList.add(conversation);
     }
+
 
     @FXML
     private void logout() throws IOException {

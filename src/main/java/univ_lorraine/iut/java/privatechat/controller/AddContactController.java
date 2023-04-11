@@ -19,7 +19,7 @@ public class AddContactController {
 
     public void initialize() {
         userLogin = App.getUser();
-        App.setWindowTitle("Ajouter un contact - SaferChat");
+        // App.setWindowTitle("Ajouter un contact - SaferChat");
         conversationListView.setItems(conversationList);
     }
 

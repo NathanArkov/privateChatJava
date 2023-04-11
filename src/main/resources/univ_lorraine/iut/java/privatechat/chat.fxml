@@ -5,10 +5,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="720.0" prefWidth="1200.0" style="-fx-background-color: #303030;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="univ_lorraine.iut.java.privatechat.controller.ChatController">
@@ -21,27 +24,41 @@
             <Insets bottom="10.0" top="10.0" />
          </BorderPane.margin></Label>
          </top>
-   <left>
-      <VBox prefHeight="665.0" prefWidth="260.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
-         <children>
-            <Button fx:id="btnAddContact" onAction="#addContact" mnemonicParsing="false" prefHeight="25.0" prefWidth="260.0" text="+" />
-            <ListView fx:id="conversationListView" prefHeight="634.0" prefWidth="260.0" style="-fx-background-color: #303030;" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="50.0" prefWidth="260.0">
-               <children>
-                          <Button fx:id="btnBackLogin" alignment="CENTER" onAction="#logout" style="-fx-font-family: consolas; -fx-padding: 5px 10px; -fx-background-color: #404040;" text="Se déconnecter" textFill="WHITE">
-                     <font>
+    <left>
+        <VBox prefHeight="665.0" prefWidth="360.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
+            <children>
+                <Button fx:id="btnAddContact" mnemonicParsing="false" onAction="#addContact" prefHeight="25.0" prefWidth="260.0" text="Ajouter un contact (+)">
+                    <font>
                         <Font name="Consolas" size="12.0" />
-                     </font>
-                  </Button>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-   </left>
+                    </font>
+                </Button>
+                <ListView fx:id="contactListView" prefHeight="594.0" prefWidth="360.0" VBox.vgrow="ALWAYS">
+                    <cellFactory>
+
+                    </cellFactory>
+                </ListView>
+                <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="50.0" prefWidth="260.0">
+                    <children>
+                        <Button fx:id="btnLogout" alignment="CENTER" onAction="#logout" style="-fx-font-family: consolas; -fx-padding: 5px 10px; -fx-background-color: #404040;" text="Se déconnecter" textFill="WHITE">
+                            <font>
+                                <Font name="Consolas" size="12.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </left>
    <center>
       <ScrollPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #303030;" BorderPane.alignment="CENTER">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="937.0">
+               <children>
+                  <TextArea id="messageArea" fx:id="messageArea" editable="false" prefHeight="560.0" prefWidth="938.0" wrapText="true" />
+                  <Line endX="938.0" endY="560.0" startX="1.0" startY="560.0" />
+                  <TextField fx:id="inputField" layoutX="14.0" layoutY="568.0" prefHeight="88.0" prefWidth="805.0" />
+                  <Button fx:id="sendButton" layoutX="850.0" layoutY="600.0" mnemonicParsing="false" text="Envoyer" />
+               </children></AnchorPane>
         </content>
       </ScrollPane>
    </center>
