@@ -22,7 +22,7 @@ public class ClientCommunication implements Runnable {
     @Override
     public void run() {
         try {
-            this.ois = new ObjectInputStream(socket.getInputStream());
+
             User client = new User("nathan", InetAddress.getLocalHost().toString(), 12345);
 
             Message message = (Message) ois.readObject();
@@ -30,6 +30,7 @@ public class ClientCommunication implements Runnable {
             this.oos = new ObjectOutputStream(socket.getOutputStream());
             oos.writeObject(new Message(client, MessageType.INIT, "Pong", LocalDateTime.now(), null));
             oos.flush();
+            this.ois = new ObjectInputStream(socket.getInputStream());
             while (true) {
                 Message messageRecu = (Message) ois.readObject();
                 messageRecu.setReceptionDate(LocalDateTime.now());

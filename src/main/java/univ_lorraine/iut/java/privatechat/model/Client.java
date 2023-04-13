@@ -14,20 +14,18 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Client implements Runnable{
 
-    private static ObjectOutputStream oos = null;
+    private ObjectOutputStream oos = null;
+    private BlockingQueue<Message> messagesToSend;
 
-    public static void sendMessage(Message message) throws IOException {
+    public void sendMessage(Message message) throws IOException {
         Scanner scanner = new Scanner(System.in);
         oos.writeObject(message);
         oos.flush();
     }
 
-    public Client (CopyOnWriteArrayList<Message> messagesToSend) throws IOException {
-        BlockingQueue<Message> queue = new LinkedBlockingQueue<Message>();
-        Message msg;
-        while((msg = queue.poll()) != null) {
-            sendMessage(msg);
-        }
+    public Client (BlockingQueue<Message> messagesToSend) throws IOException {
+        this.messagesToSend = messagesToSend;
+
 
     }
 
@@ -58,6 +56,11 @@ public class Client implements Runnable{
 
         /*oos.writeObject();
         oos.flush();*/
+
+            Message msg;
+            while((msg = messagesToSend.poll()) != null) {
+                sendMessage(msg);
+            }
 
 
             // close resources
