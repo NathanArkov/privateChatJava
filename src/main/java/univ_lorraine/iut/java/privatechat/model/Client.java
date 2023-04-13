@@ -11,6 +11,8 @@ import java.util.Scanner;
 
 public class Client {
 
+    private static ObjectOutputStream oos;
+
     public static void main(String[] args)
             throws UnknownHostException, IOException, ClassNotFoundException, InterruptedException {
         User client = new User("nathan", InetAddress.getLocalHost().toString(), 12345);
@@ -19,7 +21,7 @@ public class Client {
         // to use that
         InetAddress host = InetAddress.getLocalHost();
         Socket socket = null;
-        ObjectOutputStream oos = null;
+        oos = null;
         ObjectInputStream ois = null;
 
         // establish socket connection to server
@@ -38,7 +40,7 @@ public class Client {
         /*oos.writeObject();
         oos.flush();*/
 
-        sendMessage(oos, client);
+
 
 
         // close resources
@@ -48,19 +50,9 @@ public class Client {
 
     }
 
-    public static void sendMessage(ObjectOutputStream oos, User client) throws IOException {
+    public static void sendMessage(Message message) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.println("Message :");
-            String input = scanner.nextLine();
-            if (input.equals("exit")) {
-                scanner.close();
-                return;
-            }
-            Message message = new Message(client, MessageType.MESSAGE, input, LocalDateTime.now(), null);
-            System.out.println(message);
-            oos.writeObject(message);
-            oos.flush();
-        }
+        oos.writeObject(message);
+        oos.flush();
     }
 }
