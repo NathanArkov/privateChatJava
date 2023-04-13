@@ -3,7 +3,9 @@ package univ_lorraine.iut.java.privatechat.model;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.time.LocalDateTime;
 
 public class ClientCommunication implements Runnable {
 
@@ -21,11 +23,12 @@ public class ClientCommunication implements Runnable {
     public void run() {
         try {
             this.ois = new ObjectInputStream(socket.getInputStream());
+            User client = new User("nathan", InetAddress.getLocalHost().toString(), 12345);
 
             Message message = (Message) ois.readObject();
             System.out.println(message.toString());
             this.oos = new ObjectOutputStream(socket.getOutputStream());
-            oos.writeObject("Pong");
+            oos.writeObject(new Message(client, MessageType.INIT, "Pong", LocalDateTime.now(), null));
             oos.flush();
 
 

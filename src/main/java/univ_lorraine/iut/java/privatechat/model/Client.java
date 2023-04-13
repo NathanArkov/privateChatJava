@@ -23,7 +23,8 @@ public class Client {
         ObjectInputStream ois = null;
 
         // establish socket connection to server
-        socket = new Socket(host.getHostName(), 12345);
+        // socket = new Socket(host.getHostName(), 12345);
+        socket = new Socket("100.64.49.92", 12345);
         // write to socket using ObjectOutputStream
         oos = new ObjectOutputStream(socket.getOutputStream());
 
