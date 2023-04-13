@@ -3,7 +3,10 @@ package univ_lorraine.iut.java.privatechat.controller;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,11 +26,11 @@ public class ChatController {
     @FXML private TextField inputField;
     @FXML private Button sendButton;
     private Thread threadClient;
-    private CopyOnWriteArrayList<Message> listeMessages = new CopyOnWriteArrayList<>();
+    private BlockingQueue<Message> listeMessages;
 
     public void initialize() throws IOException, InterruptedException, ClassNotFoundException {
         userLogin = App.getUser();
-
+        listeMessages = new LinkedBlockingQueue<Message>();
         String[] args = new String[0];
         // Lancement du SERVEUR
         // Serveur.main(args);
