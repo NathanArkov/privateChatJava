@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import univ_lorraine.iut.java.privatechat.model.User;
 
 import java.io.IOException;
+import java.nio.file.FileSystemLoopException;
 
 /**
  * JavaFX App
@@ -30,7 +31,7 @@ public class App extends Application {
     }
 
     public static String getUser() {
-        return user;
+        System.out.println("tasoeur" + user); return user;
     }
     public static void setWindowSize(int width, int height) {
         scene.getWindow().setWidth(width);

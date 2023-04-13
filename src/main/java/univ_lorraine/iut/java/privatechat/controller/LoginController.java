@@ -14,7 +14,6 @@ public class LoginController {
     private final File directory = new File("data");
     @FXML private TextField loginField;
     @FXML private PasswordField passwordField;
-    @FXML private Button btnLogin;
     @FXML private Label errorLabelPassword;
 
 
