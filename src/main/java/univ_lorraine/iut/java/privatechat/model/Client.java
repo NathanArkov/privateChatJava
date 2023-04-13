@@ -57,7 +57,7 @@ public class Client implements Runnable{
         oos.flush();*/
             boolean running = true;
             Message msg;
-            while((msg = messagesToSend.poll()) != null && running) {
+            while((msg = messagesToSend.poll()) != null || running) {
                 sendMessage(msg);
             }
 

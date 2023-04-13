@@ -32,10 +32,12 @@ public class ClientCommunication implements Runnable {
             oos.flush();
 
             while (true) {
-                this.ois = new ObjectInputStream(socket.getInputStream());
                 Message messageRecu = (Message) ois.readObject();
-                messageRecu.setReceptionDate(LocalDateTime.now());
-                System.out.println(messageRecu);
+                if(messageRecu != null) {
+                    messageRecu.setReceptionDate(LocalDateTime.now());
+                    System.out.println(messageRecu);
+                }
+
             }
 
 
