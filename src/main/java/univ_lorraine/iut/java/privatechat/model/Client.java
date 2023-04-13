@@ -18,7 +18,6 @@ public class Client implements Runnable{
     private BlockingQueue<Message> messagesToSend;
 
     public void sendMessage(Message message) throws IOException {
-        Scanner scanner = new Scanner(System.in);
         oos.writeObject(message);
         oos.flush();
     }
@@ -56,9 +55,9 @@ public class Client implements Runnable{
 
         /*oos.writeObject();
         oos.flush();*/
-
+            boolean running = true;
             Message msg;
-            while((msg = messagesToSend.poll()) != null) {
+            while((msg = messagesToSend.poll()) != null && running) {
                 sendMessage(msg);
             }
 

@@ -24,14 +24,15 @@ public class ClientCommunication implements Runnable {
         try {
 
             User client = new User("nathan", InetAddress.getLocalHost().toString(), 12345);
-
+            this.ois = new ObjectInputStream(socket.getInputStream());
             Message message = (Message) ois.readObject();
             System.out.println(message.toString());
             this.oos = new ObjectOutputStream(socket.getOutputStream());
             oos.writeObject(new Message(client, MessageType.INIT, "Pong", LocalDateTime.now(), null));
             oos.flush();
-            this.ois = new ObjectInputStream(socket.getInputStream());
+
             while (true) {
+                this.ois = new ObjectInputStream(socket.getInputStream());
                 Message messageRecu = (Message) ois.readObject();
                 messageRecu.setReceptionDate(LocalDateTime.now());
                 System.out.println(messageRecu);
