@@ -59,6 +59,7 @@ public class Client implements Runnable{
             Message msg;
             while((msg = messagesToSend.poll()) != null || running) {
                 sendMessage(msg);
+                Thread.sleep(100);
             }
 
 

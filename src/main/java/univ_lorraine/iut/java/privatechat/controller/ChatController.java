@@ -26,6 +26,7 @@ public class ChatController {
     @FXML private TextField inputField;
     @FXML private Button sendButton;
     private Thread threadClient;
+    private Thread threadServeur;
     private BlockingQueue<Message> listeMessages;
 
     public void initialize() throws IOException, InterruptedException, ClassNotFoundException {
@@ -33,7 +34,8 @@ public class ChatController {
         listeMessages = new LinkedBlockingQueue<Message>();
         String[] args = new String[0];
         // Lancement du SERVEUR
-        // Serveur.main(args);
+        threadServeur = new Thread(new Serveur());
+        threadServeur.start();
 
         // Lancement du CLIENT
         threadClient = new Thread(new Client(listeMessages));
