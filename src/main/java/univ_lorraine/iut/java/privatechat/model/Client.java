@@ -58,6 +58,7 @@ public class Client {
                 return;
             }
             Message message = new Message(client, MessageType.MESSAGE, input, LocalDateTime.now(), null);
+            System.out.println(message);
             oos.writeObject(message);
             oos.flush();
         }

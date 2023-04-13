@@ -30,6 +30,12 @@ public class ClientCommunication implements Runnable {
             this.oos = new ObjectOutputStream(socket.getOutputStream());
             oos.writeObject(new Message(client, MessageType.INIT, "Pong", LocalDateTime.now(), null));
             oos.flush();
+            while (true) {
+                Message message2 = (Message) ois.readObject();
+                System.out.println(message2.toString());
+                oos.writeObject(new Message(client, MessageType.MESSAGE, "Pong", LocalDateTime.now(), null));
+                oos.flush();
+            }
 
 
         } catch (Exception e) {
