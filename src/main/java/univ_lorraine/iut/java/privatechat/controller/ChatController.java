@@ -39,6 +39,7 @@ public class ChatController {
 
         // Lancement du CLIENT
         threadClient = new Thread(new Client(listeMessages));
+        threadClient.sleep(10000);
         threadClient.start();
 
         // App.setWindowTitle("SaferChat (Utilisateur : " + userLogin + ")");
