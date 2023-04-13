@@ -3,6 +3,7 @@ package univ_lorraine.iut.java.privatechat.controller;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,16 +22,19 @@ public class ChatController {
     @FXML private Button btnAddContact;
     @FXML private TextField inputField;
     @FXML private Button sendButton;
+    private Thread threadClient;
+    private CopyOnWriteArrayList<Message> listeMessages = new CopyOnWriteArrayList<>();
 
     public void initialize() throws IOException, InterruptedException, ClassNotFoundException {
         userLogin = App.getUser();
 
         String[] args = new String[0];
         // Lancement du SERVEUR
-        Serveur.main(args);
+        // Serveur.main(args);
 
         // Lancement du CLIENT
-        Client.main(args);
+        threadClient = new Thread(new Client(listeMessages));
+        threadClient.start();
 
         // App.setWindowTitle("SaferChat (Utilisateur : " + userLogin + ")");
         // conversationListView.setItems(conversationList);
@@ -49,7 +53,8 @@ public class ChatController {
 
         Message messageToSend = new Message(new User(userLogin, "1.1.1.1",12345), MessageType.MESSAGE, message, LocalDateTime.now(), null);
 
-        Client.sendMessage(messageToSend);
+        // Envoi du message au serveur
+        listeMessages.add(messageToSend);
         }
 
     @FXML

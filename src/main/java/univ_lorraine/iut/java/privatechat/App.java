@@ -31,7 +31,7 @@ public class App extends Application {
     }
 
     public static String getUser() {
-        System.out.println("tasoeur" + user); return user;
+        return user;
     }
     public static void setWindowSize(int width, int height) {
         scene.getWindow().setWidth(width);
