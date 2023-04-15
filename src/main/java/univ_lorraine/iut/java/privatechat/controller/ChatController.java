@@ -2,6 +2,7 @@ package univ_lorraine.iut.java.privatechat.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -74,6 +75,18 @@ public class ChatController {
                     setOnMouseClicked(event -> {
                         System.out.println("L'élément " + item + " a été cliqué.");
                         // Ajoutez ici le code que vous souhaitez exécuter lorsqu'un élément est cliqué
+                        try {
+                            if(threadClient != null) {
+                                threadClient.interrupt();
+                            }
+                            System.out.println("Lancement du client");
+                            threadClient = new Thread(new Client(listeMessages, item, userLogin));
+                            Thread.sleep(100);
+                            threadClient.start();
+                        } catch (IOException | InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+
                     });
                 }
             }
@@ -94,7 +107,7 @@ public class ChatController {
         String message = inputField.getText();
         inputField.clear();
 
-        Message messageToSend = new Message(new User(userLogin, "1.1.1.1",12345), MessageType.MESSAGE, message, LocalDateTime.now(), null);
+        Message messageToSend = new Message(new User(userLogin, InetAddress.getLocalHost().toString(),12345), MessageType.MESSAGE, message, LocalDateTime.now(), null);
 
         // Envoi du message au serveur
         listeMessages.add(messageToSend);
@@ -102,6 +115,10 @@ public class ChatController {
 
     @FXML
     private void logout() throws IOException {
+        if(threadClient != null) {
+            listeMessages.add(new Message(new User(userLogin, InetAddress.getLocalHost().toString(),12345), MessageType.CLOSE, "", LocalDateTime.now(), null));
+            threadClient.interrupt();
+        }
         threadServeur.interrupt();
         App.setRoot("login");
     }

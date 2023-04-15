@@ -7,31 +7,50 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Client implements Runnable{
 
     private ObjectOutputStream oos = null;
     private BlockingQueue<Message> messagesToSend;
+    private User user;
+    private String client;
 
     public void sendMessage(Message message) throws IOException {
         oos.writeObject(message);
         oos.flush();
     }
 
-    public Client (BlockingQueue<Message> messagesToSend) throws IOException {
+    public Client (BlockingQueue<Message> messagesToSend, String user, String client) throws IOException {
         this.messagesToSend = messagesToSend;
+        this.client = client;
 
+        final Pattern pattern = Pattern.compile("[^ (:)]+");
+        final Matcher matcher = pattern.matcher(user);
+        String[] userInfos = new String[3];
+        int i = 0;
+        while (matcher.find()) {
+            userInfos[i] = matcher.group().replaceAll("\"", "");
+            i++;
+
+        }
+        String username = userInfos[0];
+        String ipaddress = userInfos[1];
+        int port = Integer.parseInt(userInfos[2]);
+        this.user = new User(username, ipaddress, port);
 
     }
 
     @Override
     public void run() {
         try {
-            User client = new User("nathan", InetAddress.getLocalHost().toString(), 12345);
+            User client = new User(this.client, InetAddress.getLocalHost().toString(), 12345);
 
             // get the localhost IP address, if server is running on some other IP, you need
             // to use that
@@ -42,7 +61,7 @@ public class Client implements Runnable{
 
             // establish socket connection to server
             // socket = new Socket(host.getHostName(), 12345);
-            socket = new Socket("100.64.49.92", 12345);
+            socket = new Socket(user.getIpaddress(), user.getPort());
             // write to socket using ObjectOutputStream
             oos = new ObjectOutputStream(socket.getOutputStream());
 
