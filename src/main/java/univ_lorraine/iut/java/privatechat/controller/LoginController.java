@@ -38,9 +38,13 @@ public class LoginController {
 
     private boolean createAccount(String login, String password) throws IOException {
         File file = new File(directory, login + ".pwd");
+        File contactFile = new File(directory, login + ".contacts");
         boolean success = false;
         try {
             success = file.createNewFile();
+            if (success) {
+                contactFile.createNewFile();
+            }
 
             try (FileWriter writer = new FileWriter(file)) {
                 writer.write("password=" + password);

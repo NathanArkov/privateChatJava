@@ -40,6 +40,6 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User [username=" + username + ", ipaddress=" + ipaddress + ", port=" + port + "]";
+        return username + " (" + ipaddress + ":" + port + ")";
     }
 }

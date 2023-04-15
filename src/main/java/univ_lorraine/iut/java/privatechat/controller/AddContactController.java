@@ -52,7 +52,7 @@ public class AddContactController {
             success = file.createNewFile();
 
             try (FileWriter writer = new FileWriter(file)) {
-                writer.write("nom contact=" + nom_contact);
+                writer.write("name=" + nom_contact);
                 writer.write(System.lineSeparator());
                 writer.write("ipv4=" + ipv4);
                 writer.write(System.lineSeparator());

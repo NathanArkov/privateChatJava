@@ -1,8 +1,12 @@
 package univ_lorraine.iut.java.privatechat.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -12,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import univ_lorraine.iut.java.privatechat.App;
@@ -19,7 +24,7 @@ import univ_lorraine.iut.java.privatechat.model.*;
 
 public class ChatController {
 
-    @FXML private ListView<Conversation> conversationListView;
+    @FXML private ListView<String> conversationListView;
     private ObservableList<Conversation> conversationList = FXCollections.observableArrayList();
     private String userLogin;
     @FXML private Button btnAddContact;
@@ -28,19 +33,51 @@ public class ChatController {
     private Thread threadClient;
     private Thread threadServeur;
     private BlockingQueue<Message> listeMessages;
+    private ArrayList<User> contactList = new ArrayList<>();
 
-    public void initialize() throws IOException, InterruptedException, ClassNotFoundException {
+    public void initialize() {
         userLogin = App.getUser();
         listeMessages = new LinkedBlockingQueue<Message>();
         String[] args = new String[0];
+        loadContacts();
+        for(User user : contactList) {
+            conversationListView.getItems().add(user.toString());
+        }
+
+
+        /*File convDir = new File(userLogin);
+        if(convDir.exists() && convDir.isDirectory()) {
+            File conv[] = convDir.listFiles();
+            loadConversations(conv, 0, 0);
+        }*/
+
         // Lancement du SERVEUR
+        System.out.println("Lancement du serveur");
         threadServeur = new Thread(new Serveur());
         threadServeur.start();
 
         // Lancement du CLIENT
+        /*System.out.println("Lancement du client");
         threadClient = new Thread(new Client(listeMessages));
         threadClient.sleep(10000);
-        threadClient.start();
+        threadClient.start();*/
+
+        conversationListView.setCellFactory(param -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item);
+                    setOnMouseClicked(event -> {
+                        System.out.println("L'élément " + item + " a été cliqué.");
+                        // Ajoutez ici le code que vous souhaitez exécuter lorsqu'un élément est cliqué
+                    });
+                }
+            }
+        });
 
         // App.setWindowTitle("SaferChat (Utilisateur : " + userLogin + ")");
         // conversationListView.setItems(conversationList);
@@ -65,6 +102,7 @@ public class ChatController {
 
     @FXML
     private void logout() throws IOException {
+        threadServeur.interrupt();
         App.setRoot("login");
     }
 
@@ -72,4 +110,43 @@ public class ChatController {
     private void addContact() throws IOException {
         App.setRoot("addContact");
     }
+
+    public void loadContacts() {
+        File contactDir = new File("data/" + userLogin);
+        if(contactDir.exists() && contactDir.isDirectory()) {
+            File[] contact = contactDir.listFiles();
+            for(int i = 0; i < contact.length; i++) {
+                if(contact[i].isFile()) {
+                    try {
+                        Scanner sc = new Scanner(contact[i]);
+                        String[] split;
+                        String login = sc.nextLine();
+                        split = login.split("=");
+                        login = split[1];
+                        String ip = sc.nextLine();
+                        split = ip.split("=");
+                        ip = split[1];
+                        String port = sc.nextLine();
+                        split = port.split("=");
+                        port = split[1];
+                        contactList.add(new User(login, ip, Integer.parseInt(port)));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        else { System.out.println("aa"); }
+    }
+
+    /*public void loadConversations(File[] files, int i, int lvl) throws IOException {
+        if (i == files.length) {
+            return;
+        }
+        if(files[i].isFile()) {
+            conversationListViewConversation.loadFromFile(files[i].getName(), userLogin);
+        }
+
+    }*/
+
 }

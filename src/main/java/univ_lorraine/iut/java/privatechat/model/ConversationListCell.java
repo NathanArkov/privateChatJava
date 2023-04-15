@@ -1,24 +1,23 @@
 package univ_lorraine.iut.java.privatechat.model;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-public class ConversationListCell extends ListCell<Conversation> {
+import javafx.scene.layout.VBox;
 
-    public ConversationListCell() {
-        super();
-        this.setOnMouseClicked(event -> {
-            if (! this.isEmpty()) {
-                Conversation conversation = this.getItem();
-                // Code pour afficher la conversation sélectionnée
-            }
-        });
-    }
+public class ConversationListCell extends ListCell<String> {
+
 
     @Override
-    public void updateItem(Conversation conversation, boolean empty) {
-        super.updateItem(conversation, empty);
-        if (empty) {
+    protected void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+
+        if (empty || item == null) {
             setText(null);
         } else {
-            setText(conversation.getContactName());
+            setText(item);
+            setOnMouseClicked(event -> {
+                System.out.println("L'élément " + item + " a été cliqué.");
+                // Ajoutez ici le code que vous souhaitez exécuter lorsqu'un élément est cliqué
+            });
         }
     }
 }
