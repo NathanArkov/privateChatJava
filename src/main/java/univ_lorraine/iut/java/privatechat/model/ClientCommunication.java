@@ -1,5 +1,6 @@
 package univ_lorraine.iut.java.privatechat.model;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -36,6 +37,9 @@ public class ClientCommunication implements Runnable {
                 if(messageRecu != null) {
                     messageRecu.setReceptionDate(LocalDateTime.now());
                     System.out.println(messageRecu);
+                    FileWriter writer = new FileWriter("data/" + client.getUsername() + "/" + messageRecu.getSender().getUsername() + ".txt");
+                    writer.write(messageRecu.toString());
+                    writer.close();
                 }
 
             }

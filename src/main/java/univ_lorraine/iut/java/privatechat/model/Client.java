@@ -22,11 +22,12 @@ public class Client implements Runnable{
 
     public void sendMessage(Message message) throws IOException {
         try {
-            oos.writeObject(message);
-            oos.flush();
+
             FileWriter writer = new FileWriter("data/" + client + "/" + user.getUsername() + ".txt");
             writer.write(message.toString());
             writer.close();
+            oos.writeObject(message);
+            oos.flush();
             System.out.println("Message envoyé et sauvegardé");
         }
         catch (IOException e) {

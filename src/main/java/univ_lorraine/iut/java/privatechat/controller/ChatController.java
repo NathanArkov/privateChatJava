@@ -16,10 +16,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import univ_lorraine.iut.java.privatechat.App;
 import univ_lorraine.iut.java.privatechat.model.*;
 
@@ -31,6 +28,7 @@ public class ChatController {
     @FXML private Button btnAddContact;
     @FXML private TextField inputField;
     @FXML private Button sendButton;
+    @FXML private TextArea chatArea;
     private Thread threadClient;
     private Thread threadServeur;
     private BlockingQueue<Message> listeMessages;
@@ -83,6 +81,15 @@ public class ChatController {
                             threadClient = new Thread(new Client(listeMessages, item, userLogin));
                             Thread.sleep(100);
                             threadClient.start();
+                            while(true) {
+                                Scanner sc = new Scanner("data/" + userLogin + "/" + item + ".conv");
+                                while(sc.hasNextLine()) {
+
+                                    if(!sc.nextLine().split("=")[0].equals("name") || !sc.nextLine().split("=")[0].equals("ip") || !sc.nextLine().split("=")[0].equals("port")) {
+                                        chatArea.appendText(sc.nextLine());
+                                    }
+                                }
+                            }
                         } catch (IOException | InterruptedException e) {
                             throw new RuntimeException(e);
                         }
