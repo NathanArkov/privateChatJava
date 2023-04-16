@@ -37,7 +37,7 @@ public class ClientCommunication implements Runnable {
                 if(messageRecu != null) {
                     messageRecu.setReceptionDate(LocalDateTime.now());
                     System.out.println(messageRecu);
-                    FileWriter writer = new FileWriter("data/" + client.getUsername() + "/" + messageRecu.getSender().getUsername() + ".txt");
+                    FileWriter writer = new FileWriter("data/" + client.getUsername() + "/" + messageRecu.getSender().getUsername() + ".conv");
                     writer.write(messageRecu.toString());
                     writer.close();
                 }
