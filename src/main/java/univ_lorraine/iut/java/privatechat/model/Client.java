@@ -1,8 +1,6 @@
 package univ_lorraine.iut.java.privatechat.model;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -23,8 +21,19 @@ public class Client implements Runnable{
     private String client;
 
     public void sendMessage(Message message) throws IOException {
-        oos.writeObject(message);
-        oos.flush();
+        try {
+            oos.writeObject(message);
+            oos.flush();
+            FileWriter writer = new FileWriter("data/" + client + "/" + user.getUsername() + ".txt");
+            writer.write(message.toString());
+            writer.close();
+            System.out.println("Message envoyé et sauvegardé");
+        }
+        catch (IOException e) {
+            System.out.println("Erreur lors de l'envoi du message");
+            e.printStackTrace();
+        }
+
     }
 
     public Client (BlockingQueue<Message> messagesToSend, String user, String client) throws IOException {
